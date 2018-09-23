@@ -1,56 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_gravity="left">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:id="@+id/foodtruck_name"
-            android:text="testing">
-        </TextView>
+        <TableRow android:layout_gravity="center_vertical">
 
-        <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:id="@+id/foodtruck_address"
-            android:text="testing">
-        </TextView>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:id="@+id/foodtruck_description"
-            android:text="testing">
-        </TextView>
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/foodtruck_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="testing"
+                    android:textAlignment="center"
+                    android:textStyle="bold"></TextView>
 
-    </LinearLayout>
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/foodtruck_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="testing"
+                    android:textAlignment="center"></TextView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:layout_weight="1"
-        android:text="*****"
-        android:textAlignment="center" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/foodtruck_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="testing"
+                    android:textAlignment="center"></TextView>
 
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/small_rating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:theme="@style/StarsTheme" />
+            </LinearLayout>
+
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class FoodTruckListAdapter extends RecyclerView.Adapter<FoodTruckListAdapter.ViewHolder> {
@@ -33,9 +34,12 @@ public class FoodTruckListAdapter extends RecyclerView.Adapter<FoodTruckListAdap
         TextView name = linearLayout.findViewById(R.id.foodtruck_name);
         TextView address = linearLayout.findViewById(R.id.foodtruck_address);
         TextView description = linearLayout.findViewById(R.id.foodtruck_description);
+        RatingBar rating = linearLayout.findViewById(R.id.small_rating);
         name.setText(FoodTruckData.trucks[pos].name);
         address.setText(FoodTruckData.trucks[pos].address);
         description.setText(FoodTruckData.trucks[pos].description);
+        rating.setRating((float) FoodTruckData.trucks[pos].rating);
+        rating.setNumStars(5);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 listener.onClick(pos);

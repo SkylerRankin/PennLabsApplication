@@ -40,23 +40,31 @@
             android:isIndicator="true"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textAlignment="center"
             android:id="@+id/truck_detail_address"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textAlignment="center"
             android:id="@+id/truck_detail_description"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textAlignment="center"
             android:id="@+id/truck_detail_hours"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textAlignment="center"
             android:id="@+id/truck_detail_phone"/>
 
         <fragment
@@ -66,6 +74,7 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             map:cameraZoom="14"
             map:cameraTargetLat="39.9529"
             map:cameraTargetLng="-75.197098"/>
