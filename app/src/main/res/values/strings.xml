@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Food &amp; Buildings</string>
+    <string-array name="sort_options">
+        <item>Alphabetical</item>
+        <item>Closest</item>
+        <item>Rating</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_all_map">AllMapActivity</string>
+</resources>
