@@ -23,9 +23,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class FoodTruckActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    //a variable so that extra variable names are consistent across classes
     public final static String NAME = "1";
+
+    //the position of the current food truck in the data file
     private int pos;
+
     private FusedLocationProviderClient location;
+
+    //a reference to the map for later use
     private GoogleMap temp_map;
 
     @Override
@@ -33,12 +39,13 @@ public class FoodTruckActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(save);
         setContentView(R.layout.activity_food_truck);
 
+        //add the up button to the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ((TextView) findViewById(R.id.truck_detail_name)).setText("test");
+        //populate the layout with all the data based on the pos variable
         if (getIntent().getExtras().containsKey(FoodTruckActivity.NAME)) {
             pos = (Integer) (getIntent().getExtras().get(FoodTruckActivity.NAME));
             ((TextView) findViewById(R.id.truck_detail_name)).setText(FoodTruckData.trucks[pos].name);
@@ -57,9 +64,11 @@ public class FoodTruckActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
+        //set the map callback
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //initialize the location object for later use
         location = LocationServices.getFusedLocationProviderClient(this);
 
     }
@@ -68,10 +77,13 @@ public class FoodTruckActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(final GoogleMap map) {
         temp_map = map;
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        //add a marker for the food truck, and display its title
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(FoodTruckData.trucks[pos].coordinate_x, FoodTruckData.trucks[pos].coordinate_y))
                 .title(FoodTruckData.trucks[pos].name))
                 .showInfoWindow();
+
+        //if there is permission, show the user location. Otherwise, request permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             location.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
@@ -87,6 +99,7 @@ public class FoodTruckActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    //If permission was granted, the reload the map
     @Override
     public void onRequestPermissionsResult(int req, String permissions[], int[] grant) {
         switch (req) {

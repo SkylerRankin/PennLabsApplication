@@ -28,6 +28,7 @@ public class FoodTruckListAdapter extends RecyclerView.Adapter<FoodTruckListAdap
         return new FoodTruckListAdapter.ViewHolder(v);
     }
 
+    //when a new item in the recycler view is loaded, build it based on the pos variable that is passed in
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int pos) {
         LinearLayout linearLayout = holder.v;

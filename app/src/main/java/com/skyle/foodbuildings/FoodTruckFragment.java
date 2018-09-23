@@ -43,8 +43,11 @@ public class FoodTruckFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle save) {
 
         LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_food_truck, container, false);
+
+        //make the recycler view use a linear layout
         ((RecyclerView)linearLayout.findViewById(R.id.foodtruck_recycler)).setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        //set the adapter for the recycler view
         final FoodTruckListAdapter adapter = new FoodTruckListAdapter();
         adapter.setListener(new FoodTruckListener());
 
@@ -53,6 +56,7 @@ public class FoodTruckFragment extends Fragment implements View.OnClickListener 
 
         linearLayout.findViewById(R.id.all_button).setOnClickListener(this);
 
+        //connect the spinner selections to the sorting function in the FoodTruckData class
         ((Spinner) linearLayout.findViewById(R.id.sort_spinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -66,6 +70,7 @@ public class FoodTruckFragment extends Fragment implements View.OnClickListener 
                                 @Override
                                 public void onSuccess(Location l) {
                                     FoodTruckData.sort(FoodTruckData.SortMethod.Closest, getContext(), l);
+                                    adapter.notifyDataSetChanged();
                                 }
                             });
                         } else {
@@ -77,6 +82,7 @@ public class FoodTruckFragment extends Fragment implements View.OnClickListener 
                         FoodTruckData.sort(FoodTruckData.SortMethod.Rating, getContext(), null);
                         break;
                 }
+                //refersh the recyclerview
                 adapter.notifyDataSetChanged();
             }
 
@@ -89,6 +95,7 @@ public class FoodTruckFragment extends Fragment implements View.OnClickListener 
         return linearLayout;
     }
 
+    //load the activity that shows all trucks on a single map
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.all_button) {
@@ -97,6 +104,7 @@ public class FoodTruckFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    //when an individual truck is selected, open the activity and pass the position of the truck to the new activity
     private class FoodTruckListener implements FoodTruckListAdapter.Listener {
         @Override
         public void onClick(int pos) {

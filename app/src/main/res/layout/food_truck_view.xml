@@ -23,7 +23,6 @@
                     android:id="@+id/foodtruck_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="testing"
                     android:textAlignment="center"
                     android:textStyle="bold"></TextView>
 
@@ -31,14 +30,12 @@
                     android:id="@+id/foodtruck_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="testing"
                     android:textAlignment="center"></TextView>
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/foodtruck_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="testing"
                     android:textAlignment="center"></TextView>
 
             </LinearLayout>

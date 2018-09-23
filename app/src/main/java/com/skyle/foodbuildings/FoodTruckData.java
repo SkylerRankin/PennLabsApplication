@@ -1,13 +1,12 @@
 package com.skyle.foodbuildings;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.v4.app.ActivityCompat;
 
 import java.util.Arrays;
 import java.util.Comparator;
+
+//A class to quickly hold all the food truck data and provide the sorting functionality
 
 public class FoodTruckData {
 
@@ -35,6 +34,7 @@ public class FoodTruckData {
     public static void sort(FoodTruckData.SortMethod m, Context context, final Location l) {
 
         switch (m) {
+            //sort based on comparing names alphabetically
             case Alphabetical:
                 Arrays.sort(trucks, new Comparator<FoodTruck>() {
                     @Override
@@ -43,6 +43,7 @@ public class FoodTruckData {
                     }
                 });
                 break;
+                //sort based on the distance from the location argument
             case Closest:
                 Arrays.sort(trucks, new Comparator<FoodTruck>() {
                     @Override
@@ -61,6 +62,7 @@ public class FoodTruckData {
                     }
                 });
                 break;
+                //sort based on the rating
             case Rating:
                 Arrays.sort(trucks, new Comparator<FoodTruck>() {
                     @Override

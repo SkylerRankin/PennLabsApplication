@@ -18,7 +18,7 @@
             android:layout_gravity="left"
             android:foregroundGravity="left"
             android:gravity="left|center_vertical"
-            android:text="Show All On Map"
+            android:text="@string/show_all_label"
             android:id="@+id/all_button"/>
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="right"
-            android:text="Sort by" />
+            android:text="@string/sort_by_label" />
 
         <Spinner
             android:id="@+id/sort_spinner"

@@ -6,7 +6,11 @@
         <item>Rating</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_all_map">AllMapActivity</string>
+    <string name="search_hint">Search...</string>
+    <string name="search_button">Search</string>
+    <string name="show_all_label">Show All On Map</string>
+    <string name="sort_by_label">Sort By</string>
+    <string name="no_match_label">No Buildings Found</string>
+
 </resources>

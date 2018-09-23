@@ -19,15 +19,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
+        //add tabs
         TabAdapter adapter = new TabAdapter(getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
-
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
+    //specify which fragments are shown on which tabs and what their titles are
     private class TabAdapter extends FragmentPagerAdapter {
 
         public TabAdapter(FragmentManager fm) {

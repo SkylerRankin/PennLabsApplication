@@ -29,7 +29,10 @@
         <activity
             android:name=".AllMapActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".BuildingActivity"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>
