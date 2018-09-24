@@ -22,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -37,8 +38,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCallback {
+public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     //a key so that the extra variable names are consistent
     public static final String QUERY = "1";
@@ -47,10 +50,12 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
     private boolean data_loaded = false;
     private JSONObject json;
     private FusedLocationProviderClient location;
-    //default values
-    private double lat = 39.9529;
-    private double lng = -75.197098;
-    private String title = "";
+
+    //loaded values
+    private List<Double> lats;
+    private List<Double> lngs;
+    private List<String> titles;
+    private List<String> links;
 
     @Override
     protected void onCreate(Bundle save) {
@@ -67,8 +72,6 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
         //the searched term is included to the constructor
         if (getIntent().getExtras().containsKey(BuildingActivity.QUERY)) {
             new LoadBuildingTask(this).execute((String) getIntent().getExtras().get(BuildingActivity.QUERY));
-        } else {
-            ((TextView) findViewById(R.id.building_name)).setText("you shouldn't be here...");
         }
 
         //set the callback for when the map is ready configuration
@@ -77,6 +80,11 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
 
         //initialize the location variable for use later
         location = LocationServices.getFusedLocationProviderClient(this);
+
+        lats = new ArrayList<>();
+        lngs = new ArrayList<>();
+        titles = new ArrayList<>();
+        links = new ArrayList<>();
     }
 
     @Override
@@ -86,13 +94,17 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
         //if the building information isn't loaded from the api yet, then don't show the markers
         if (!data_loaded)
             return;
-        map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
-        //add a marker for the building and show its title
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lng))
-                .title(title))
-                .showInfoWindow();
+        map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        map.setOnMarkerClickListener(this);
+        //add a marker for each building but show the title of the first
+        for (int i = lats.size()-1; i >= 0; --i) {
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(lats.get(i), lngs.get(i)))
+                    .title(titles.get(i)))
+                    .showInfoWindow();
+        }
+
 
         //if there is permission, show the users location. Otherwise, request permission with the callback
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -102,7 +114,6 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
                     map.addMarker(new MarkerOptions()
                             .position(new LatLng(l.getLatitude(), l.getLongitude()))
                             .title("Your Location"));
-
                 }
             });
         } else {
@@ -113,16 +124,24 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
     //If the user grants permission, the reload the map. Otherwise, notify them that functionality may not work
     @Override
     public void onRequestPermissionsResult(int req, String permissions[], int[] grant) {
-        switch (req) {
-            case 1: {
-                if (grant.length > 0 && grant[0] == PackageManager.PERMISSION_GRANTED) {
-                    onMapReady(temp_map);
-                } else {
-                    Toast.makeText(this, "Some functionality may not work without location permissions", Toast.LENGTH_LONG).show();
-                }
-                return;
+        if (req == 1) {
+            if (grant.length > 0 && grant[0] == PackageManager.PERMISSION_GRANTED) {
+                onMapReady(temp_map);
+            } else {
+                Toast.makeText(this, "Some functionality may not work without location permissions", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    //When the user clicks on a building marker on the map, update the title and link text views to reflect their selection
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (!marker.getTitle().equals("Your Location")) {
+            int pos = titles.indexOf(marker.getTitle());
+            ((TextView) findViewById(R.id.building_name)).setText(titles.get(pos));
+            ((TextView) findViewById(R.id.building_link)).setText(links.get(pos));
+        }
+        return false;
     }
 
     //An async task for pulling building data
@@ -144,7 +163,7 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream stream = new BufferedInputStream(connection.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(connection.getInputStream())));
                 StringBuilder s = new StringBuilder();
                 try {
                     String line = reader.readLine();
@@ -153,16 +172,16 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
                         line = reader.readLine();
                     }
                 } catch (IOException e) {
-
+                    Toast.makeText(context, "Error when reaching API", Toast.LENGTH_LONG).show();
                 }
                 try {
                     stream.close();
                 } catch (IOException e){}
                 res = s.toString();
             } catch (MalformedURLException e) {
-
+                Toast.makeText(context, "Error when reaching API", Toast.LENGTH_LONG).show();
             }catch (IOException e) {
-
+                Toast.makeText(context, "Error when reaching API", Toast.LENGTH_LONG).show();
             }
             data_loaded = true;
             return res;
@@ -170,18 +189,37 @@ public class BuildingActivity extends AppCompatActivity  implements OnMapReadyCa
 
         //after the pulling is done, access the UI with the json string from the background function
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String raw) {
             try {
-                json = new JSONObject(result);
+                json = new JSONObject(raw);
                 JSONArray root = (JSONArray) json.get("result_data");
-                JSONObject first = (JSONObject) root.get(0);
-                lat = Double.parseDouble((String)first.get("latitude"));
-                lng = Double.parseDouble((String)first.get("longitude"));
-                title = (String) first.get("title");
-                ((TextView) context.findViewById(R.id.building_name)).setText(title);
-                onMapReady(temp_map);
+                lats.clear();
+                lngs.clear();
+                titles.clear();
+                links.clear();
+
+                //if there are multiple results for a query, then add all of them
+                for (int i = 0; i < root.length(); ++i) {
+                    JSONObject result = (JSONObject) root.get(i);
+                    lats.add(i, Double.parseDouble((String)result.get("latitude")));
+                    lngs.add(i, Double.parseDouble((String)result.get("longitude")));
+                    titles.add(i, (String) result.get("title"));
+                    links.add(i, (String) result.get("http_link"));
+                }
+
+                //display the first result in the layout first
+                if (root.length() > 0) {
+                    ((TextView) context.findViewById(R.id.building_name)).setText(titles.get(0));
+                    ((TextView) context.findViewById(R.id.building_link)).setText(links.get(0));
+                    onMapReady(temp_map);
+                } else {
+                    ((TextView) context.findViewById(R.id.building_name)).setText(R.string.no_match_label);
+                    ((TextView) context.findViewById(R.id.building_link)).setText("");
+                }
+
             } catch (JSONException e) {
                 ((TextView) context.findViewById(R.id.building_name)).setText(R.string.no_match_label);
+                ((TextView) context.findViewById(R.id.building_link)).setText("");
             }
         }
     }

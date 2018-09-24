@@ -78,15 +78,12 @@ public class AllMapActivity extends AppCompatActivity implements OnMapReadyCallb
     //the callback for when the location permissions aren't granted. Notify user that stuff might not work if they don't accept the permission.
     //Once permission is granted, reload the map using temp_map
     @Override
-    public void onRequestPermissionsResult(int req, String permissions[], int[] grant) {
-        switch (req) {
-            case 1: {
-                if (grant.length > 0 && grant[0] == PackageManager.PERMISSION_GRANTED) {
-                    onMapReady(temp_map);
-                } else {
-                    Toast.makeText(this, "Some functionality may not work without location permissions", Toast.LENGTH_LONG).show();
-                }
-                return;
+    public void onRequestPermissionsResult(int req, String p[], int[] grant) {
+        if (req == 1) {
+            if (grant.length > 0 && grant[0] == PackageManager.PERMISSION_GRANTED) {
+                onMapReady(temp_map);
+            } else {
+                Toast.makeText(this, "Some functionality may not work without location permissions", Toast.LENGTH_LONG).show();
             }
         }
     }

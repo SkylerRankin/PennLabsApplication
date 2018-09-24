@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food &amp; Buildings</string>
+    <string name="app_name">Penn Food &amp; Buildings</string>
     <string-array name="sort_options">
         <item>Alphabetical</item>
         <item>Closest</item>

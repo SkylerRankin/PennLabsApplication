@@ -30,6 +30,13 @@
             android:textAlignment="center"
             android:textSize="36sp" />
 
+        <TextView
+            android:id="@+id/building_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:autoLink="web"/>
+
         <fragment
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
