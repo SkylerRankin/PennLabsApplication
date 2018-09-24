@@ -20,7 +20,7 @@ This application features two tabs, the first of which allows users to view info
   This fragment is used in the view pager of the main activity, and holds a recycler view that lists all of the food trucks, along with their information and rating. The recycler view does most of the work for this class, but the spinner does have some logic behind it. When a selection is made, the spinner tells the FoodTruckData class to sort the data based on the selection. Afterwards, the adapter that converts the data into views for the recycler view is refreshed. For the sorting based on location, gathering the user's location is not done immediately; a location object is passed to a callback. Thus, while the other sorting methods can just sort and then refresh the adapter, the location sort must wait until the location is actually recieved, then sort, and then update the adapter to see the changes.
 - BuildingsFragment
   
-  This fragment is used in the view pager of the main activity, and provides a text input region so that buildings can be searched for. The fragments adds a textChangedListener to the text input field so that when a user types enter, the new line is removed, and the Search button is clicked, triggering the BuildingActivity.
+  This fragment is used in the view pager of the main activity, and provides a text input region so that buildings can be searched for. The fragments adds a textChangedListener to the text input field so that when a user types enter, the new line is removed, and the Search button is clicked, triggering the BuildingActivity. The fragment also contains a list view that displays the recently searched terms. Whenever the user searches a building name, that query is added to the RecentSearchesData class. Then, when the fragment is returned to, that search along with the other 9 most recent searches are displayed. Since they are just text views, an array adapter is used to convert the array of search queries to list of text views. A click listener is added such that when an item in the list is clicked, the fragment will perform the same logic as if the search button has been clicked.
 
 ##### Services
 All maps are rendered using the Google maps API. Foodtruck and building locations are displayed using the provided coordinates, but the user location is gathered using the FusedLocationProvider from the Google location API. In all cases, the location services utilize either the "Fine" or the "Coarse" location service, whichever the user has given permission for.
@@ -35,6 +35,10 @@ When loading information about buildings, the PennLabs API is used. This was com
 - FoodTruckListAdapter
   
   This adapter specifies how to build each item in the recycler view's list. It takes a position as an integer, get the relevant information from the FoodTruckData class, and then fills out the specific layout that is displayed as the view is scrolled.
+
+- RecentSearchesData
+
+    This class holds the array of recently searched buildings. Ideally, it would write to a SQLite database to persist the searches, but for now it just holds them while the app is running. 
 
 ##### Other Resource files
 The strings.xml file holds the strings that are statically set in the application. The styles.xml holds the themes for the appbars as well as the color scheme for the stars/rating bars.
